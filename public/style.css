@@ -1,0 +1,48 @@
+body{
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+}
+h1, a, p{
+  opacity: 1;
+  color: white;
+}
+
+a {
+  font-size: 1.5rem;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav {
+  background-color: red;
+  width: 100vw;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100vh;
+}
+.wrapper * {
+  z-index: 10;
+}
+
+.wrapper::before {
+  content: '';
+  background-image: url('./background.jpg');
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.75;
+  z-index: -1;
+}

@@ -4,41 +4,35 @@ const fs = require('fs/promises');
 const os = require('os');
 
 const server = http.createServer(async (req, res) => {
-  const pathname = req.url;
-  let file;
+  const pathname = path.join(__dirname, 'public', req.url);
+  let fileExtension = path.extname(pathname);
   try {
-    switch (pathname) {
-      case "/":
-        file = await fs.readFile(path.join(__dirname, "files", "index.html"));
-        break;
-      case "/about":
-        file = await fs.readFile("./files/about.html");
-        break;
-      case "/contact-me":
-        file = await fs.readFile("./files/contact-me.html");
-        break;
-      default:
-        file = await fs.readFile("./files/404.html");
-        break;
-    }
+    if (fileExtension === '') {
+      if (req.url === '/') {
+          file = await fs.readFile(pathname + 'index.html');
+      } else {
+        try {
+        file = await fs.readFile(pathname + '.html');
+        } catch(e) {
+          file = await fs.readFile('./files/404.html');
+        }
+      }
+      res.writeHead(200, {'Content-Type': 'text/html' })
+      res.write(file);
+      res.end();
+      } else if (fileExtension === '.jpg' || fileExtension === '.css') {
+        const type = fileExtension === '.jpg' ? 'image/jpeg' : 'text/css';
+        file = await fs.readFile(pathname);
+        res.writeHead(200, {'Content-Type': type })
+        res.write(file);
+        res.end();
+      } 
+
   } catch (e) {
     file = `<h1>${e}</h1>`;
   }
 
-  try {
-  const style = await fs.readFile('./files/style.css');
-  const img = await fs.readFile('./files/background.jpg');
-  console.log(style)
-  // res.writeHead(200, { 'Content-Type' : 'text/css'});
-  // res.end(style);
-  // res.writeHead(200, { 'Content-Type' : 'image/jpeg'});
-  // res.end(img);
-  } catch (e) {
-    console.log(e);
-  }
-  res.writeHead(200, {'Content-Type': 'text/html' })
-  res.write(file);
-  res.end();
+
 });
 
 const PORT = process.env.PORT || 3000;
