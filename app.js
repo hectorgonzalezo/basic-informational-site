@@ -9,18 +9,15 @@ const pathname = path.join(__dirname, 'public');
 
 app.use(express.static("public"));
 
-app.get("/", async (req, res) => {
-  const file = await fs.readFile(pathname + '/index.html');
+app.get("/", (req, res) => {
   res.sendFile(pathname + '/index.html');
 } );
 
-app.get("/about", async (req, res) => {
-  const file = await fs.readFile(pathname + '/about.html');
+app.get("/about", (req, res) => {
   res.sendFile(pathname + '/about.html');
 } );
 
-app.get("/contact-me", async (req, res) => {
-  const file = await fs.readFile(pathname + '/contact-me.html');
+app.get("/contact-me", (req, res) => {
   res.sendFile(pathname + '/contact-me.html');
 } );
 
